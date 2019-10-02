@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rent Rundown</title>
+    <link href="https://fonts.googleapis.com/css?family=Muli&display=swap" rel="stylesheet">
+    <style>
+
+    * {
+        font-family: "Muli";
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    #emoji {
+       font-size: 300px;
+       margin-top: 10vh;
+       text-align: center;
+   }
+
+    #result {
+        display: none;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+
+    #summary {
+        margin-top: 12vh;
+        margin-left: 70px;
+        font-size: 1.3rem;
+    }
+
+    .right {
+        float: right;
+        font-weight: bold;
+    }
+
+    #header {
+        background-color: #0087F7;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 25px;
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+        color: white;
+    }
+
+    #footer {
+        background-color: #0087F7;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 25px;
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+        color: white;
+    }
+
+    #back {
+        font-size: 0.6em;
+        color: white;
+        background-color: #0087F7;
+        padding: 10px;
+        border-radius: 5px;
+    }
+}
+
+</style>
+
+</head>
+<body>
+
+    <div id="header"></div>
+    <div class="container">
+        <div class="column" id="summary">
+            <p id="result">{{ prop }}</p>
+            <h2>Results</h2>
+            <p>Tenancy length: <span class="right">{{ total_payment_dates }} months</span></p>
+            <p>Rent: <span class="right">£{{ rent }}pcm</span></p>
+            <p>Total rent due: <span class="right">£{{ total_out }}</span></p>
+            <p>Total rent paid: <span class="right">£{{ total_in }}</span></p>
+            <p>Arrears at end of tenancy: <span class="right">£{{ final_arrears }}</span></p>
+            <p>Average (mean) arrears during tenancy: <span class="right">£{{ average_arrears }}</span></p>
+            <br>
+            <a id="back" href="./">Go Back</a>
+        </div>
+        <div class="column" id="visual">
+            <div id="emoji"></div>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <script>
+        var percentColors = [
+        { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },
+        { pct: 0.25, color: { r: 0xff, g: 0xff, b: 0 } },
+        { pct: 0.5, color: { r: 0x00, g: 0xff, b: 0 } } ];
+
+        var getColorForPercentage = function(pct) {
+            for (var i = 1; i < percentColors.length - 1; i++) {
+                if (pct < percentColors[i].pct) {
+                    break;
+                }
+            }
+            var lower = percentColors[i - 1];
+            var upper = percentColors[i];
+            var range = upper.pct - lower.pct;
+            var rangePct = (pct - lower.pct) / range;
+            var pctLower = 1 - rangePct;
+            var pctUpper = rangePct;
+            var color = {
+                r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+                g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+                b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+            };
+            return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
+        }
+
+        var final_result = document.getElementById("result").innerHTML;
+        var testres = 0.5 - final_result;
+        document.getElementById("footer").style.backgroundColor = getColorForPercentage(parseFloat(testres));
+        document.getElementById("header").style.backgroundColor = getColorForPercentage(parseFloat(testres));
+
+        if(final_result >= 0 && final_result < 0.05) {
+            document.getElementById("emoji").innerHTML = "&#x1F60E;"
+        } else if(final_result > 0.05 && final_result < 0.1) {
+            document.getElementById("emoji").innerHTML = "&#x1F600;"
+        } else if(final_result > 0.1 && final_result < 0.16) {
+            document.getElementById("emoji").innerHTML = "&#x1F642;"
+        } else if(final_result > 0.16 && final_result < 0.25) {
+            document.getElementById("emoji").innerHTML = "&#x1F610;"
+        } else if(final_result > 0.25 && final_result < 0.4) {
+            document.getElementById("emoji").innerHTML = "&#x1F612;"
+        } else if(final_result > 0.4 && final_result < 0.65) {
+            document.getElementById("emoji").innerHTML = "&#x1F641;"
+        } else if(final_result > 0.65 && final_result < 1.2) {
+            document.getElementById("emoji").innerHTML = "&#x1F627;"
+        } else if(final_result > 1.2 && final_result < 20) {
+            document.getElementById("emoji").innerHTML = "&#x1F629;"
+        } else if(final_result > 20) {
+            document.getElementById("emoji").innerHTML = "&#x2620;"
+        }
+    </script>
+</body>
+</html>    

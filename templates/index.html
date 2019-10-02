@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>Rent Rundown</title>
+	<link href="https://fonts.googleapis.com/css?family=Muli&display=swap" rel="stylesheet">
+	<style>
+
+</style>
+<meta charset="UTF-8">
+{{ dropzone.load_css() }}
+<style>
+
+* {
+	font-family: "Muli";
+}
+
+.container {
+	display: grid;
+	grid-template-columns: auto auto;
+	margin-top: 25vh;
+}
+
+.dropzone {
+	border: 5px dashed #0087F7; 
+	min-height: 50vh;
+	margin-left: 10%;
+	margin-right: 20%;
+}
+
+.detail {
+	text-align: center;
+}
+
+#header {
+	background-color: #0087F7;
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 25px;
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+	color: white;
+	text-decoration: none;
+}
+
+.footer {
+	background-color: #0087F7;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 25px;
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+	color: white;
+	text-decoration: none;
+}
+
+</style>
+
+</head>
+<body>
+	<div id="header"></div>
+	<div class="container">
+		<div class="detail">
+			<h1 class="emojis">&#x1F60E; &#x1F600; &#x1F642; &#x1F610; &#x1F612; &#x1F641; &#x1F627; &#x1F629; &#x2620;</h1>
+			<h1>Rent Rundown</h1>
+			<h3>Get a quick summary of rent payments during a tenancy</h3>
+			<p>Upload a rent statement (CSV) to see the results</p>
+			<p>Files should be formatted as [date, description, received, due]</p>
+		</div>
+		<div class="detail">
+			{{ dropzone.create('index') }}
+		</div>
+	</div>
+
+	<div class="footer">
+		github.com/bird-ogd/rent_rundown
+	</div>
+
+	{{ dropzone.load_js() }}
+	{{ dropzone.config() }}
+
+</body>
+</html>
